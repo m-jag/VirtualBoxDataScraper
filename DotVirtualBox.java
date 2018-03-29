@@ -43,18 +43,26 @@ public class DotVirtualBox
 
 					Element root = doc.getDocumentElement();
 					System.out.println("Root element: " + root.getNodeName());
-
 					if (root.hasChildNodes())
 					{
-						NodeList children = doc.getDocumentElement().getChildNodes();
+						//Grab default machine folder
+						System.out.println("SystemProperties");
+						NodeList systemProp = doc.getElementsByTagName("SystemProperties");
+						System.out.println("\tdefaultMachineFolder: " + ((Element)systemProp.item(0)).getAttribute("defaultMachineFolder"));
+						
+
+						//Parse ExtraData Items
+						System.out.println("ExtraData");
+						NodeList extraData = doc.getElementsByTagName("ExtraDataItem");
 						Node node;
-						for (int n = 0; n < children.getLength(); n++)
+						for (int n = 0; n < extraData.getLength(); n++)
 						{
-							node = children.item(n);
-							if (!node.hasChildNodes())
-								System.out.println("leaf child");
-							else
-								System.out.println("child");
+							node = extraData.item(n);
+							if (node.getNodeType() == Node.ELEMENT_NODE)
+							{
+								Element eElement = (Element) node;
+								System.out.println("\t" + eElement.getAttribute("name") + ": " + eElement.getAttribute("value"));
+							}
 						}
 					}
 				}
