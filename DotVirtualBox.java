@@ -42,7 +42,6 @@ public class DotVirtualBox
 					doc.getDocumentElement().normalize();
 
 					Element root = doc.getDocumentElement();
-					System.out.println("Root element: " + root.getNodeName());
 					if (root.hasChildNodes())
 					{
 						//Grab default machine folder
@@ -61,7 +60,89 @@ public class DotVirtualBox
 							if (node.getNodeType() == Node.ELEMENT_NODE)
 							{
 								Element eElement = (Element) node;
-								System.out.println("\t" + eElement.getAttribute("name") + ": " + eElement.getAttribute("value"));
+								String[] values;
+								switch (eElement.getAttribute("name"))
+								{
+									case "GUI/GroupDefinitions/":
+										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+									    values = eElement.getAttribute("value").split(",");
+										for (String value: values)
+										{
+											System.out.println("\t\t" + value);
+										}
+										break;
+									case "GUI/RecentListCD":
+										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+									    values = eElement.getAttribute("value").split(",");
+										for (String value: values)
+										{
+											System.out.println("\t\t" + value);
+										}
+										break;
+									case "GUI/RecentListHD":
+										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+									    values = eElement.getAttribute("value").split(",");
+										for (String value: values)
+										{
+											System.out.println("\t\t" + value);
+										}
+										break;
+									case "GUI/UpdateDate":
+										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+									    values = eElement.getAttribute("value").split(", ");
+										System.out.print("\t\t");
+										for (String value: values)
+										{
+											System.out.print(value + " ");
+										}
+										System.out.println();
+										break;
+									//default: System.out.println("\t" + eElement.getAttribute("name") + ": " + eElement.getAttribute("value"));
+								}
+							}
+						}
+
+						//Parse Machine Registry
+						System.out.println("Machine Registry");
+						NodeList machines = doc.getElementsByTagName("MachineEntry");
+						for (int n = 0; n < machines.getLength(); n++)
+						{
+							node = machines.item(n);
+							if (node.getNodeType() == Node.ELEMENT_NODE)
+							{
+								Element eElement = (Element) node;
+								System.out.println("\t" + eElement.getAttribute("src"));
+							}
+						}
+
+						//Parse Netservice Registry
+						System.out.println("Netservice Registry");						
+						System.out.println("\tDHCP Servers");
+						NodeList dhcpservers = doc.getElementsByTagName("DHCPServer");
+						for (int n = 0; n < dhcpservers.getLength(); n++)
+						{
+							node = dhcpservers.item(n);
+							if (node.getNodeType() == Node.ELEMENT_NODE)
+							{
+								Element eElement = (Element) node;
+								System.out.println("\t\t" + eElement.getAttribute("networkName"));
+								System.out.println("\t\t\t IP Address: " + eElement.getAttribute("IPAddress"));
+								System.out.println("\t\t\t Network Mask: " + eElement.getAttribute("networkMask"));
+								System.out.println("\t\t\t Lower IP: " + eElement.getAttribute("lowerIP"));
+								System.out.println("\t\t\t Upper IP: " + eElement.getAttribute("upperIP"));
+							}
+						}
+						System.out.println("\tNAT Networks");
+						NodeList natNetworks = doc.getElementsByTagName("NATNetwork");
+						for (int n = 0; n < dhcpservers.getLength(); n++)
+						{
+							node = dhcpservers.item(n);
+							if (node.getNodeType() == Node.ELEMENT_NODE)
+							{
+								Element eElement = (Element) node;
+								System.out.println("\t\t" + eElement.getAttribute("networkName"));
+								System.out.println("\t\t\t Network : " + eElement.getAttribute("network"));
+								System.out.println("\t\t\t IPv6 Prefix: " + eElement.getAttribute("ipv6prefix"));
 							}
 						}
 					}
