@@ -104,7 +104,7 @@ public class Main implements Runnable
         System.out.println("\tVBox : " +  dotVirtualBox.toString());
         if (dotVirtualBox.exists())
         {
-            //DotVirtualBox dvb = new DotVirtualBox(dotVirtualBox.toPath(), outputPath);
+            DotVirtualBox dvb = new DotVirtualBox(dotVirtualBox.toPath(), outputFolder.toString());
         }
         else
         {

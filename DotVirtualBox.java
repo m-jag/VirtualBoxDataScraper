@@ -32,9 +32,9 @@ public class DotVirtualBox
 		File dotVirtualBoxFile = path.toFile();
 		if (dotVirtualBoxFile.exists())
 		{
-			bw = new BufferedWriter(new FileWriter(output + "/" + dotVirtualBoxFile.getName())
 			try
 			{
+				bw = new BufferedWriter(new FileWriter(output + "/" + dotVirtualBoxFile.getName()));
 				// Check VirtualBox.xml
 				File virtualBoxXML = new File(path.toString() + "/VirtualBox.xml");
 				if (virtualBoxXML.exists() && virtualBoxXML.isFile())
@@ -48,13 +48,13 @@ public class DotVirtualBox
 					if (root.hasChildNodes())
 					{
 						//Grab default machine folder
-						System.out.println("SystemProperties");
+						bw.write("SystemProperties\n");
 						NodeList systemProp = doc.getElementsByTagName("SystemProperties");
-						System.out.println("\tdefaultMachineFolder: " + ((Element)systemProp.item(0)).getAttribute("defaultMachineFolder"));
+						bw.write("\tdefaultMachineFolder: " + ((Element)systemProp.item(0)).getAttribute("defaultMachineFolder") + "\n");
 						
 
 						//Parse ExtraData Items
-						System.out.println("ExtraData");
+						bw.write("ExtraData\n");
 						NodeList extraData = doc.getElementsByTagName("ExtraDataItem");
 						Node node;
 						for (int n = 0; n < extraData.getLength(); n++)
@@ -67,46 +67,46 @@ public class DotVirtualBox
 								switch (eElement.getAttribute("name"))
 								{
 									case "GUI/GroupDefinitions/":
-										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+										bw.write("\t" + eElement.getAttribute("name") + ": \n");
 									    values = eElement.getAttribute("value").split(",");
 										for (String value: values)
 										{
-											System.out.println("\t\t" + value);
+											bw.write("\t\t" + value + "\n");
 										}
 										break;
 									case "GUI/RecentListCD":
-										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+										bw.write("\t" + eElement.getAttribute("name") + ": \n");
 									    values = eElement.getAttribute("value").split(",");
 										for (String value: values)
 										{
-											System.out.println("\t\t" + value);
+											bw.write("\t\t" + value + "\n");
 										}
 										break;
 									case "GUI/RecentListHD":
-										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+										bw.write("\t" + eElement.getAttribute("name") + ": \n");
 									    values = eElement.getAttribute("value").split(",");
 										for (String value: values)
 										{
-											System.out.println("\t\t" + value);
+											bw.write("\t\t" + value + "\n");
 										}
 										break;
 									case "GUI/UpdateDate":
-										System.out.println("\t" + eElement.getAttribute("name") + ": ");
+										bw.write("\t" + eElement.getAttribute("name") + ": \n");
 									    values = eElement.getAttribute("value").split(", ");
-										System.out.print("\t\t");
+										bw.write("\t\t");
 										for (String value: values)
 										{
-											System.out.print(value + " ");
+											bw.write(value + " ");
 										}
-										System.out.println();
+										bw.newLine();
 										break;
-									//default: System.out.println("\t" + eElement.getAttribute("name") + ": " + eElement.getAttribute("value"));
+									//default: bw.write("\t" + eElement.getAttribute("name") + ": " + eElement.getAttribute("value") + "\n");
 								}
 							}
 						}
 
 						//Parse Machine Registry
-						System.out.println("Machine Registry");
+						bw.write("Machine Registry\n");
 						NodeList machines = doc.getElementsByTagName("MachineEntry");
 						for (int n = 0; n < machines.getLength(); n++)
 						{
@@ -114,13 +114,13 @@ public class DotVirtualBox
 							if (node.getNodeType() == Node.ELEMENT_NODE)
 							{
 								Element eElement = (Element) node;
-								System.out.println("\t" + eElement.getAttribute("src"));
+								bw.write("\t" + eElement.getAttribute("src") + "\n");
 							}
 						}
 
 						//Parse Netservice Registry
-						System.out.println("Netservice Registry");						
-						System.out.println("\tDHCP Servers");
+						bw.write("Netservice Registry\n");						
+						bw.write("\tDHCP Servers\n");
 						NodeList dhcpservers = doc.getElementsByTagName("DHCPServer");
 						for (int n = 0; n < dhcpservers.getLength(); n++)
 						{
@@ -128,14 +128,14 @@ public class DotVirtualBox
 							if (node.getNodeType() == Node.ELEMENT_NODE)
 							{
 								Element eElement = (Element) node;
-								System.out.println("\t\t" + eElement.getAttribute("networkName"));
-								System.out.println("\t\t\t IP Address: " + eElement.getAttribute("IPAddress"));
-								System.out.println("\t\t\t Network Mask: " + eElement.getAttribute("networkMask"));
-								System.out.println("\t\t\t Lower IP: " + eElement.getAttribute("lowerIP"));
-								System.out.println("\t\t\t Upper IP: " + eElement.getAttribute("upperIP"));
+								bw.write("\t\t" + eElement.getAttribute("networkName") + "\n");
+								bw.write("\t\t\t IP Address: " + eElement.getAttribute("IPAddress") + "\n");
+								bw.write("\t\t\t Network Mask: " + eElement.getAttribute("networkMask") + "\n");
+								bw.write("\t\t\t Lower IP: " + eElement.getAttribute("lowerIP") + "\n");
+								bw.write("\t\t\t Upper IP: " + eElement.getAttribute("upperIP") + "\n");
 							}
 						}
-						System.out.println("\tNAT Networks");
+						bw.write("\tNAT Networks" + "\n");
 						NodeList natNetworks = doc.getElementsByTagName("NATNetwork");
 						for (int n = 0; n < natNetworks.getLength(); n++)
 						{
@@ -143,13 +143,14 @@ public class DotVirtualBox
 							if (node.getNodeType() == Node.ELEMENT_NODE)
 							{
 								Element eElement = (Element) node;
-								System.out.println("\t\t" + eElement.getAttribute("networkName"));
-								System.out.println("\t\t\t Network : " + eElement.getAttribute("network"));
-								System.out.println("\t\t\t IPv6 Prefix: " + eElement.getAttribute("ipv6prefix"));
+								bw.write("\t\t" + eElement.getAttribute("networkName") + "\n");
+								bw.write("\t\t\t Network : " + eElement.getAttribute("network")  + "\n");
+								bw.write("\t\t\t IPv6 Prefix: " + eElement.getAttribute("ipv6prefix")  + "\n");
 							}
 						}
 					}
 				}
+				bw.close();
 			}
 			catch(IOException ex)
 			{
