@@ -34,7 +34,7 @@ public class DotVirtualBox
 		{
 			try
 			{
-				bw = new BufferedWriter(new FileWriter(output + "/" + dotVirtualBoxFile.getName()));
+				bw = new BufferedWriter(new FileWriter(output + "/DotVirtualBox.txt"));
 				// Check VirtualBox.xml
 				File virtualBoxXML = new File(path.toString() + "/VirtualBox.xml");
 				if (virtualBoxXML.exists() && virtualBoxXML.isFile())
