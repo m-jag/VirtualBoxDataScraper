@@ -4,13 +4,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.DirectoryStream;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 /**
 * @author Matthew Jagodzinski
 * @version 1.0
 **/
 public class Main implements Runnable
 {
-    
     public static void main(String[] args)
     {
         new Main().run();
@@ -18,7 +18,15 @@ public class Main implements Runnable
 
     public void run()
     {
-        getUserPaths(false).forEach((path) -> parseDotVirtualBox(path));
+        File outputFolder;
+        int analysisNum = 1;
+        while ( (outputFolder = new File(System.getProperty("user.dir") + "/Virtual Box Analysis #" + analysisNum)).exists())
+        {
+            analysisNum++;
+        }
+        outputFolder.mkdir();
+        String outputStr = outputFolder.toString();
+        getUserPaths(false).forEach((path) -> parseDotVirtualBox(path, outputStr));
     }
 
     /**
@@ -76,14 +84,24 @@ public class Main implements Runnable
         return userPaths;
     }
 
-    public void parseDotVirtualBox(Path userpath)
+    public void parseDotVirtualBox(Path userpath, String outputPath)
     {
-        System.out.println("Parsing : " +  userpath.toString());
+        String pattern = Pattern.quote(System.getProperty("file.separator"));
+        String[] path = userpath.toString().split(pattern);
+        File outputFolder;
+        int analysisNum = 1;
+        while ( (outputFolder = new File(outputPath.toString() + "/" +  path[0].split(":")[0] + " " + analysisNum)).exists())
+        {
+            analysisNum++;
+        }
+        outputFolder.mkdir();
+
+        System.out.println("Parsing : " +  outputFolder.toString());
         File dotVirtualBox = new File(userpath.toString() + "/.VirtualBox");
         System.out.println("\tVBox : " +  dotVirtualBox.toString());
         if (dotVirtualBox.exists())
         {
-            DotVirtualBox dvb = new DotVirtualBox(dotVirtualBox.toPath());
+            //DotVirtualBox dvb = new DotVirtualBox(dotVirtualBox.toPath(), outputPath);
         }
         else
         {

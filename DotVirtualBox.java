@@ -2,9 +2,9 @@ import java.nio.file.Path;
 import java.io.File;
 import java.io.IOException;
 
-//File Reading
-import java.io.BufferedReader;
-import java.io.FileReader;
+//File Reading\Writing
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
 //XML
 import javax.xml.parsers.DocumentBuilder;
@@ -18,18 +18,21 @@ import org.w3c.dom.NodeList;
 
 public class DotVirtualBox
 {
-	private Path path;
 
-	public DotVirtualBox(Path path)
+	private Path path;
+	private BufferedWriter bw;
+
+	public DotVirtualBox(Path path, String output)
 	{
 		this.path = path;
-		gatherData();
+		gatherData(output);
 	}
-	public void gatherData()
+	public void gatherData(String output)
 	{
 		File dotVirtualBoxFile = path.toFile();
 		if (dotVirtualBoxFile.exists())
 		{
+			bw = new BufferedWriter(new FileWriter(output + "/" + dotVirtualBoxFile.getName())
 			try
 			{
 				// Check VirtualBox.xml
@@ -134,9 +137,9 @@ public class DotVirtualBox
 						}
 						System.out.println("\tNAT Networks");
 						NodeList natNetworks = doc.getElementsByTagName("NATNetwork");
-						for (int n = 0; n < dhcpservers.getLength(); n++)
+						for (int n = 0; n < natNetworks.getLength(); n++)
 						{
-							node = dhcpservers.item(n);
+							node = natNetworks.item(n);
 							if (node.getNodeType() == Node.ELEMENT_NODE)
 							{
 								Element eElement = (Element) node;
