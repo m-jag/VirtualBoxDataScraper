@@ -90,9 +90,12 @@ public class Main implements Runnable
         String[] path = userpath.toString().split(pattern);
         File outputFolder;
         int analysisNum = 1;
-        while ( (outputFolder = new File(outputPath.toString() + "/" +  path[0].split(":")[0] + " " + analysisNum)).exists())
+
+        outputFolder = new File(outputPath.toString() + "/Analysis Of " +  path[0].split(":")[0] + " " + path[2]);
+        while (outputFolder.exists())
         {
             analysisNum++;
+            outputFolder = new File(outputPath.toString() + "/Analysis Of " +  path[0].split(":")[0] + " " + path[2] + " " + analysisNum);
         }
         outputFolder.mkdir();
 
