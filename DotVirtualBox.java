@@ -5,7 +5,6 @@ import java.io.IOException;
 //File Reading\Writing
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.FileNotFoundException;
 //XML
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,11 +20,16 @@ public class DotVirtualBox
 
 	private Path path;
 	private BufferedWriter bw;
+	private String defaultMachineFolder;
 
 	public DotVirtualBox(Path path, String output)
 	{
 		this.path = path;
 		gatherData(output);
+	}
+	public String getDefaultMachineFolder()
+	{
+		return defaultMachineFolder;
 	}
 	public void gatherData(String output)
 	{
@@ -50,7 +54,8 @@ public class DotVirtualBox
 						//Grab default machine folder
 						bw.write("SystemProperties\n");
 						NodeList systemProp = doc.getElementsByTagName("SystemProperties");
-						bw.write("\tdefaultMachineFolder: " + ((Element)systemProp.item(0)).getAttribute("defaultMachineFolder") + "\n");
+						defaultMachineFolder =  ((Element)systemProp.item(0)).getAttribute("defaultMachineFolder");
+						bw.write("\tdefaultMachineFolder: " + defaultMachineFolder + "\n");
 						
 
 						//Parse ExtraData Items

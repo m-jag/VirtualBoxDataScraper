@@ -105,6 +105,7 @@ public class Main implements Runnable
         if (dotVirtualBox.exists())
         {
             DotVirtualBox dvb = new DotVirtualBox(dotVirtualBox.toPath(), outputFolder.toString());
+            parseDefaultMachineFolder(dvb.getDefaultMachineFolder(), outputFolder.toString());
         }
         else
         {
@@ -112,7 +113,8 @@ public class Main implements Runnable
         }
     }
 
-    public void parseDefaultMachineFolder(Path userpath)
+    public void parseDefaultMachineFolder(String defaultMachineFolder, String outputPath)
     {
+        DefaultMachineFolder dmf = new DefaultMachineFolder(defaultMachineFolder, outputPath);
     }
 }
