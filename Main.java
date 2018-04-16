@@ -28,14 +28,6 @@ public class Main implements Runnable
         String outputStr = outputFolder.toString();
         getUserPaths(false).forEach((path) -> parseDotVirtualBox(path, outputStr));
     }
-
-    /**
-     * Returns an ArrayList of paths to the user directories of non-default
-     * users at the specified path.
-     *
-     * @param drive_path  pass the path to the users folder as a string
-     * @return            an arraylist of paths to the user folders from the specified drive
-     */
     
     public ArrayList<Path> getUserPaths(Path drive_path, boolean include_default_users)
     {
